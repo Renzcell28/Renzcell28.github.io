@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Valentine 💖</title>
+
+<style>
+* { box-sizing: border-box; margin:0; padding:0;}
+body { min-height:100vh; font-family:Arial,sans-serif; overflow:hidden; background:black;}
+
+/* BACKGROUND SLIDESHOW */
+.slideshow { position: fixed; inset:0; z-index:-3; }
+.slide {
+    position:absolute; inset:0;
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+    background-color:black;
+    opacity:0;
+    animation:fade 24s infinite;
+}
+.slide:nth-child(1){background-image:url("Valentine/623848182_906015412000972_8468693484046125525_n.jpg"); animation-delay:0s;}
+.slide:nth-child(2){background-image:url("Valentine/624636884_2074942883268673_7671809283033534197_n.jpg"); animation-delay:6s;}
+.slide:nth-child(3){background-image:url("Valentine/625870879_1432915694879582_5094432523464812449_n.jpg"); animation-delay:12s;}
+.slide:nth-child(4){background-image:url("Valentine/627054153_1975054166385039_3432478714410390817_n.jpg"); animation-delay:18s;}
+@keyframes fade{0%{opacity:0}10%{opacity:1}25%{opacity:1}35%{opacity:0}100%{opacity:0}}
+
+/* OVERLAY */
+.overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:-2;}
+
+/* MAIN BOX */
+.container{
+    background:rgba(255,255,255,0.95);
+    max-width:420px; width:90%;
+    padding:25px; border-radius:20px;
+    text-align:center;
+    margin:auto; margin-top:15vh;
+    box-shadow:0 8px 25px rgba(0,0,0,0.3);
+    position:relative; z-index:5;
+    transition: all 1s ease;
+}
+.container.hidden{ margin-top:-150vh; opacity:0; }
+
+h1{ color:#ff4d6d; font-size:26px; }
+h2{ color:#444; font-size:20px; margin:15px 0 25px; line-height:1.4; }
+
+.buttons{ position:relative; height:70px; }
+button{ padding:12px 22px; font-size:17px; border:none; border-radius:25px; cursor:pointer; min-width:100px; }
+#yesBtn{ background:#ff4d6d; color:white;}
+#noBtn{ background:#aaa; color:white; position:absolute; right:0;}
+.message{ display:none; margin-top:20px; font-size:20px; color:#ff4d6d; font-weight:bold; }
+
+/* PHOTO BUBBLES */
+.bubble{
+    position:fixed; bottom:-80px;
+    background-size:contain; background-repeat:no-repeat; background-position:center;
+    border-radius:50%; animation:floatUp 5s linear forwards;
+    z-index:9999; box-shadow:0 4px 15px rgba(255,255,255,0.6);
+}
+
+/* TEXT BUBBLES */
+.text-bubble{
+    position:fixed; bottom:-50px;
+    font-size:18px; font-weight:bold;
+    color:#ff4d6d; white-space:nowrap;
+    animation:textFloat 4s linear forwards;
+    z-index:9999; text-shadow:0 2px 6px rgba(0,0,0,0.3);
+}
+@keyframes floatUp{0%{ transform:translateY(0) scale(0.7); opacity:0;} 20%{opacity:1;} 100%{ transform:translateY(-120vh) scale(1.1); opacity:0; }}
+@keyframes textFloat{0%{ transform:translateY(0) scale(0.8); opacity:0;} 20%{opacity:1;} 100%{ transform:translateY(-120vh) scale(1.1); opacity:0;}}
+
+/* SMALL PHONES */
+@media(max-width:360px){ h1{font-size:22px;} h2{font-size:18px;} }
+
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="slideshow">
+    <div class="slide"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
+    <div class="slide"></div>
+</div>
+<div class="overlay"></div>
+
+<!-- MAIN CONTENT -->
+<div class="container" id="container">
+
+    <h1>💖 Hi BABI 💖</h1>
+
+    <h2>
+        Bolawan O. Panumpang,<br>
+        Can I be your Valentine? 🌹
+    </h2>
+
+    <div class="buttons">
+        <button id="yesBtn">Yes 💕</button>
+        <button id="noBtn">No 😅</button>
+    </div>
+
+    <div class="message" id="message">
+        Yay! I love you forever 💘🥰
+    </div>
+
+</div>
+
+<script>
+/* VARIABLES */
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const message = document.getElementById("message");
+const container = document.getElementById("container");
+let bubbleStarted=false;
+
+/* PHOTOS */
+const photos = [
+ "Valentine/623848182_906015412000972_8468693484046125525_n.jpg",
+ "Valentine/624636884_2074942883268673_7671809283033534197_n.jpg",
+ "Valentine/625870879_1432915694879582_5094432523464812449_n.jpg",
+ "Valentine/627054153_1975054166385039_3432478714410390817_n.jpg"
+];
+
+/* NO BUTTON */
+function moveButton(){
+    const maxX = container.clientWidth - noBtn.clientWidth;
+    const maxY = container.clientHeight - noBtn.clientHeight;
+    const x = Math.random()*maxX;
+    const y = Math.random()*maxY;
+    noBtn.style.left = x+"px";
+    noBtn.style.top = y+"px";
+}
+noBtn.addEventListener("mouseover",moveButton);
+noBtn.addEventListener("touchstart",e=>{ e.preventDefault(); moveButton(); });
+
+/* CREATE PHOTO BUBBLE */
+function createBubble(){
+    const bubble=document.createElement("div");
+    bubble.className="bubble";
+    const img = photos[Math.floor(Math.random()*photos.length)];
+    bubble.style.backgroundImage=`url("${img}")`;
+    const size=60+Math.random()*40;
+    bubble.style.width=size+"px";
+    bubble.style.height=size+"px";
+    bubble.style.left=Math.random()*window.innerWidth+"px";
+    document.body.appendChild(bubble);
+    setTimeout(()=>{ bubble.remove(); },5000);
+}
+
+/* CREATE TEXT BUBBLE */
+function createTextBubble(){
+    const bubble=document.createElement("div");
+    bubble.className="text-bubble";
+    const texts = ["I ❤️ YOU","LOVE YOU 💖","💘 I LOVE YOU 💘","I ❤️ LOVE YOU"];
+    bubble.innerText = texts[Math.floor(Math.random()*texts.length)];
+    bubble.style.left = Math.random()*window.innerWidth + "px";
+    document.body.appendChild(bubble);
+    setTimeout(()=>{ bubble.remove(); },4000);
+}
+
+/* YES BUTTON */
+yesBtn.addEventListener("click",()=>{
+    message.style.display="block";
+    yesBtn.innerText="I Love You 💖";
+    yesBtn.disabled=true;
+    noBtn.style.display="none";
+
+    // MOVE TEXT OUT OF VIEW
+    container.classList.add("hidden");
+
+    // START BUBBLES
+    if(!bubbleStarted){
+        bubbleStarted=true;
+        setInterval(createBubble,350);
+        setInterval(createTextBubble,500);  // TEXT bubbles every 0.5s
+    }
+});
+</script>
+
+</body>
+</html>
